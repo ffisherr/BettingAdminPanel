@@ -1,0 +1,68 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+{% if allow_to_create == True %}
+<a href="/admin/{{context}}/create/"class="btn btn-primary" ></i>Создать</a>
+{% endif %}
+<form action="" method="post">
+{% if context != 'personal_area'%}
+<input type="text" name="push_notification" placeholder="Введите текст сообщения">
+<input class="btn"  type="submit" name="submit" value="Отправить puhs-уведомление выбранным пользователям">
+{% endif %}
+	<table>
+		<caption>{{table_description}}</caption>
+		<thead>
+			<tr>
+				<th>Email</th>
+				<th>Имя</th>
+				<th>Фамилия</th>
+				<th>Телефон</th>
+				<th>Удалить</th>
+				<th>Изменить</th>
+				{% if context != 'personal_area' %}
+				<th></th>
+				{% endif %}
+
+			</tr>
+		</thead>
+		<tbody>
+			{% for _u in users %}
+				<tr>
+					<td>{{_u.email}}</td>
+					<td>{{_u.first_name}}</td>
+					<td>{{_u.last_name}}</td>
+					<td>{{_u.phone}}</td>
+					<td><a href="/admin/{{context}}/delete_user/{{_u.id}}">Удалить</a></td>
+					<td><a href="/admin/{{context}}/edit_user/{{_u.id}}">Изменить</a></td>
+					{% if context != 'personal_area' %}
+					<td><input type="checkbox" name="check_{{_u.id}}"></td>
+					{%endif%}
+				</tr>
+    		{% endfor %}
+		</tbody>
+	</table>
+</form>
+	<style type="text/css">
+	table {
+		font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+		font-size: 14px;
+		border-collapse: collapse;
+		text-align: center;
+	}
+	th, td:first-child {
+		background: #AFCDE7;
+		color: white;
+		padding: 10px 20px;
+	}
+	th, td {
+		border-style: solid;
+		border-width: 0 1px 1px 0;
+		border-color: white;
+	}
+	td {
+		background: #D8E6F3;
+	}
+	th:first-child, td:first-child {
+		text-align: left;
+	}
+</style>
+{% endblock %}

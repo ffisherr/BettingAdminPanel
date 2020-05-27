@@ -1,0 +1,50 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+<table>
+    <caption>Сообщения в чате {{chat.chat_name}}</caption>
+    <thead>
+        <tr>
+            <th>Автор сообщения</th>
+            <th>Текст</th>
+            {% if admin == True %}
+            <th>Удалить сообщение</th>
+            {% endif %}
+        </tr>
+    </thead>
+    <tbody>
+        {% for author, message in messages %}
+        <tr>
+            <td>{{author}}</td>
+            <td>{{message.text}}</td>
+            {% if admin == True %}
+            <td><a href="/admin/chats/delete/message/{{message.id}}">Удалить сообщение</a></td>
+            {% endif %}
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+    <style type="text/css">
+    table {
+        font-family: "Lucida Sans Unicode", "Lucida Grande", Sans-Serif;
+        font-size: 14px;
+        border-collapse: collapse;
+        text-align: center;
+    }
+    th, td:first-child {
+        background: #AFCDE7;
+        color: white;
+        padding: 10px 20px;
+    }
+    th, td {
+        border-style: solid;
+        border-width: 0 1px 1px 0;
+        border-color: white;
+    }
+    td {
+        background: #D8E6F3;
+    }
+    th:first-child, td:first-child {
+        text-align: left;
+    }
+</style>
+{% endblock body %}

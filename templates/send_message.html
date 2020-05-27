@@ -1,0 +1,8 @@
+{% extends 'admin/master.html' %}
+{% block body %}
+<form action="" method="post">
+    <label for="email">Email получателя</label><input required type="email" name="email" placeholder="Email"><br>
+    <label for="first_name">Текст письма</label><input required type="text" name="message_text" placeholder="Текст"><br>
+    <input type="submit" name="submit" value="Подтвердить">
+</form>
+{% endblock body %}

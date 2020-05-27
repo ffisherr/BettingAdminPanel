@@ -1,0 +1,22 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+	<div>
+    	<form action="" method="post">
+    		<label for="email">Email</label><input required type="email" name="email" value="{{_u.email}}" placeholder="Email"><br>
+    		<label for="first_name">Имя</label><input required type="text" name="first_name" value="{{_u.first_name}}" placeholder="Имя"><br>
+    		<label for="last_name">Фамилия</label><input required type="text" name="last_name" value="{{_u.last_name}}" placeholder="Фамилия"><br>
+    		<label for="phone">Телефон</label><input required type="tel" name="phonenumber" value="{{_u.phone}}" placeholder="Телефон"><br><input type="hidden" name="id" value="{{_u.id}}">
+    		{% if create_user == True %}
+    		<label for="password_1">Пароль</label><input required type="password" name="password_1" placeholder="Пароль"><br>
+    		<label for="password_2">Повторить пароль</label><input required type="password" name="password_1" placeholder="Повторить пароль"><br>	
+    		{% elif personal == True %}	
+    		{{warnings}}<br>
+    		<label for="old_password">Старый пароль</label><input required type="password" name="old_password" placeholder="Пароль"><br>
+    		<label for="new_password_1">Новый пароль</label><input required type="password" name="new_password_1" placeholder="Повторить пароль"><br>	
+    		<label for="new_password_2">Повторите новый пароль</label><input required type="password" name="new_password_2" placeholder="Повторить пароль"><br>			
+    		{% endif %}
+    		<input type="submit" name="submit" value="Подтвердить">
+    	</form>
+    </div>
+{% endblock %}
