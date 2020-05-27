@@ -158,7 +158,9 @@ class UserMessages(db.Model):
 
 def getUserRole(user_id):
 	user_role = UserRoles.query.filter_by(user_id=user_id).first()
-	return user_role.role.role_name
+	if user_role.role:
+		return user_role.role.role_name
+	return AGENT
 
 
 def chooseFrom(r_users, USER_ROLE):
