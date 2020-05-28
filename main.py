@@ -24,18 +24,18 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 app = Flask(__name__)
 
-username = 'root'
-password = 'toor'
+username = 'laraveluser'
+password = '6M,xXWtE'
 server   = 'localhost'
-db_name  = 'betting'
+db_name  = 'betting_app'
 
 # set optional bootswatch theme
 app.config['FLASK_ADMIN_SWATCH'] = 'cerulean'
 app.config['SECRET_KEY'] = '123456790'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://%s:%s@%s/%s' % (username, password, server, db_name)
 app.config['RECAPTCHA_USE_SSL']= False
-app.config['RECAPTCHA_PUBLIC_KEY']= '6LcrJPwUAAAAAJ4hBSaTleqKN9FDzxSVch_8i0so'
-app.config['RECAPTCHA_PRIVATE_KEY']='6LcrJPwUAAAAAMo_wcrlC1SB7Hv3lgIGlhcFXX19'
+app.config['RECAPTCHA_PUBLIC_KEY']= '6LeI4_wUAAAAAGGly18xc6w35YgcYYlKqx1hsEX5'
+app.config['RECAPTCHA_PRIVATE_KEY']='6LeI4_wUAAAAADvXODl1wM4VJBtvKCjMFAZYGfNW'
 app.config['RECAPTCHA_OPTIONS'] = {'theme':'white'}
 
 
@@ -158,7 +158,7 @@ class UserMessages(db.Model):
 
 def getUserRole(user_id):
 	user_role = UserRoles.query.filter_by(user_id=user_id).first()
-	if user_role.role:
+	if user_role:
 		return user_role.role.role_name
 	return AGENT
 
@@ -192,7 +192,7 @@ def getPrivateChat(user1, user2, commonChats):
 			uchat = UserChats.query.filter_by(chat_id=_chat).all()
 			if len(uchat) == 2:
 				return uchat[0].chat_id
-	chat_name = 'Личный чат %s с %s' % (user1.email, user2.email)
+	chat_name = 'Private chat %s with %s' % (user1.email, user2.email)
 	uch = Chats(chat_name=chat_name)
 	db.session.add(uch)
 	db.session.commit()
@@ -229,17 +229,17 @@ def createUserRole(user_id, role_name):
 # Define login and registration forms (for flask-login)
 class LoginForm(FlaskForm):
 	login 	 = StringField('Email', validators=[Required()])
-	password = PasswordField('Пароль', validators=[Required()])
+	password = PasswordField('Password', validators=[Required()])
 	recaptcha = RecaptchaField()
 
 	def validate_login(self, field):
 		user = self.get_user()
 
 		if user is None:
-			raise ValidationError('Пользователя не существует')
+			raise ValidationError('Unknown user')
 
 		if user.verify_password(self.password.data) == False:
-			raise ValidationError('Неверный пароль')
+			raise ValidationError('Wrong password')
 
 	def get_user(self):
 		return db.session.query(Users).filter_by(email=self.login.data).first()
@@ -247,18 +247,18 @@ class LoginForm(FlaskForm):
 
 class RegistrationForm(FlaskForm):
 	email 			= StringField('Email', validators=[Required()])
-	first_name	    = StringField('Имя', validators=[Required()])
-	last_name       = StringField('Фамилия', validators=[Required()])
-	phone           = TelField('Телефон', validators=[Required()])
-	password 	    = PasswordField('Пароль', validators=[Required()])
-	repeat_password = PasswordField('Повторить пароль', validators=[Required()])
+	first_name	    = StringField('First Name', validators=[Required()])
+	last_name       = StringField('Last Name', validators=[Required()])
+	phone           = TelField('Phone number', validators=[Required()])
+	password 	    = PasswordField('Password', validators=[Required()])
+	repeat_password = PasswordField('Repeat password', validators=[Required()])
 	recaptcha = RecaptchaField()
 
 	def validate_login(self, field):
 		if db.session.query(Users).filter_by(email=self.email.data).count() > 0:
-			raise ValidationError('Пользователь уже существует')
+			raise ValidationError('Unknown user')
 		if self.password.data != self.repeat_password.data:
-			raise ValidationError('Введенные пароли не совпадают')
+			raise ValidationError('Wrong passwords')
 
 
 # Create customized index view class that handles login & registration
@@ -279,7 +279,7 @@ class MyAdminIndexView(admin.AdminIndexView):
 			login.login_user(user)
 		if login.current_user.is_authenticated:
 			return redirect(url_for('.index'))
-		link = '<p>Нет аккаунта? <a href="' + url_for('.register_view') + '">Нажмите чтобы зарегестрироваться.</a></p>'
+		link = '<p>Do not have an account? <a href="' + url_for('.register_view') + '">Click for registration.</a></p>'
 		self._template_args['form'] = form
 		self._template_args['link'] = link
 		return super(MyAdminIndexView, self).index()
@@ -293,8 +293,8 @@ class MyAdminIndexView(admin.AdminIndexView):
 			form.populate_obj(user)
 			
 			if form.password.data != form.repeat_password.data:
-				link = '<p>Пароли не совпадают!</p></br>\
-				<p>Уже есть аккаунт? <a href="' + url_for('.login_view') + '">Нажмите здесь чтобы войти.</a></p>'
+				link = '<p>Wrong passwords!</p></br>\
+				<p>Already have an account? <a href="' + url_for('.login_view') + '">Click to log in.</a></p>'
 				self._template_args['link'] = link
 				self._template_args['form'] = form
 				return super(MyAdminIndexView, self).index()
@@ -307,7 +307,7 @@ class MyAdminIndexView(admin.AdminIndexView):
 
 			login.login_user(user)
 			return redirect(url_for('.index'))
-		link = '<p>Уже есть аккаунт? <a href="' + url_for('.login_view') + '">Нажмите здесь чтобы войти.</a></p>'
+		link = '<p>Already have an account? <a href="' + url_for('.login_view') + '">Click to log in.</a></p>'
 		self._template_args['form'] = form
 		self._template_args['link'] = link
 		return super(MyAdminIndexView, self).index()
@@ -350,7 +350,7 @@ class AgentsModelView(BaseView):
 			if len(checks) > 0:
 				sendNotificationTo(checks, request.form.get('push_notification'))
 			return redirect(url_for('.index'))
-		table_description = 'Таблица Агентов'
+		table_description = 'Agents table'
 		return self.render('edit_user.html', users=result, allow_to_create=True,
 			table_description=table_description, context='agents',
 			current=login.current_user, curr_role=getUserRole(login.current_user.id))
@@ -415,7 +415,7 @@ class ManagersModelView(BaseView):
 			if len(checks) > 0:
 				sendNotificationTo(checks, request.form.get('push_notification'))
 			return redirect(url_for('.index'))
-		table_description = 'Таблица Менеджеров'
+		table_description = 'Managers table'
 		return self.render('edit_user.html', users=result, allow_to_create=True,
 			table_description=table_description, context='managers',
 			current=login.current_user, curr_role=getUserRole(login.current_user.id))
@@ -470,7 +470,7 @@ class PersonalAreaModelView(BaseView):
 	
 	@expose('/')
 	def index(self):
-		table_description = 'Личный кабинет'
+		table_description = 'Personal'
 		c_user = Users.query.filter_by(id=login.current_user.id).first()
 		return self.render('edit_user.html', users=[c_user], allow_to_create=False,
 			table_description=table_description, context='personal_area', current=login.current_user)
@@ -487,10 +487,10 @@ class PersonalAreaModelView(BaseView):
 		u = User.query.filter_by(id=login.current_user.id).first()
 		if request.method == 'POST':
 			if u.verify_password(request.form.get('old_password')) == False:
-				warnings = 'Введен неверный старый пароль'
+				warnings = 'Wrong old password'
 				return self.render('edit_user_info.html', _u=u, warnings=warnings, personal=True)
 			if request.form.get('new_password_1') != request.form.get('new_password_2'):
-				warnings = 'Введенные пароли не совпадают'
+				warnings = 'Wrong passwords'
 				return self.render('edit_user_info.html', _u=u, warnings=warnings, personal=True)				
 			u.email       = request.form.get('email')
 			u.status_id   = 2
@@ -579,15 +579,15 @@ class ChatsModelView(BaseView):
 		return login.current_user.is_authenticated
 
 
-admin = Admin(app, name='Панель администратора', index_view=MyAdminIndexView(), template_mode='bootstrap3')
-admin.add_view(AgentsModelView(name='Агенты', endpoint='agents'))
-admin.add_view(ManagersModelView(name='Менеджеры', endpoint='managers'))
-admin.add_view(AdminModelView(Bets, db.session, name='Ставки'))
-admin.add_view(AdminModelView(Bookmakers, db.session, name='Букмекеры'))
-admin.add_view(ChatsModelView(name="Чаты", endpoint='chats'))
-admin.add_view(PersonalAreaModelView(name='Личный кабинет', endpoint='personal_area'))
-admin.add_view(ExitView(name='Выход'))
+admin = Admin(app, name='Admin Panel', index_view=MyAdminIndexView(), template_mode='bootstrap3')
+admin.add_view(AgentsModelView(name='Agents', endpoint='agents'))
+admin.add_view(ManagersModelView(name='Managers', endpoint='managers'))
+admin.add_view(AdminModelView(Bets, db.session, name='Bets'))
+admin.add_view(AdminModelView(Bookmakers, db.session, name='Bookmakers'))
+admin.add_view(ChatsModelView(name="Chats", endpoint='chats'))
+admin.add_view(PersonalAreaModelView(name='Personal', endpoint='personal_area'))
+admin.add_view(ExitView(name='Exit'))
 
 
 if __name__ == '__main__':
-	app.run(debug=True)
+	app.run()
