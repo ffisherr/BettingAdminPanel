@@ -5,12 +5,9 @@
 
     <div>
         {% if current_user.is_authenticated %}
-        <h1>Главная</h1>
+        <h1>Main</h1>
         <p class="lead">
-            Авторизация успешна
-        </p>
-        <p>
-            Для перехода к конкретным действиям переходите в разделе меню.
+            Success
         </p>
         {% else %}
         <form method="POST" action="">
@@ -28,7 +25,7 @@
             {% endif %}
             </div>
             {% endfor %}
-            <button class="btn" type="submit">Подтвердить</button>
+            <button class="btn" type="submit">Submit</button>
         </form>
         {{ link | safe }}
         {% endif %}
