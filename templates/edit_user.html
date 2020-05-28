@@ -13,11 +13,11 @@
 		<thead>
 			<tr>
 				<th>Email</th>
-				<th>Имя</th>
-				<th>Фамилия</th>
-				<th>Телефон</th>
-				<th>Удалить</th>
-				<th>Изменить</th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Phone number</th>
+				<th>Delete</th>
+				<th>Modify</th>
 				{% if context != 'personal_area' %}
 				<th></th>
 				{% endif %}
@@ -31,8 +31,8 @@
 					<td>{{_u.first_name}}</td>
 					<td>{{_u.last_name}}</td>
 					<td>{{_u.phone}}</td>
-					<td><a href="/admin/{{context}}/delete_user/{{_u.id}}">Удалить</a></td>
-					<td><a href="/admin/{{context}}/edit_user/{{_u.id}}">Изменить</a></td>
+					<td><a href="/admin/{{context}}/delete_user/{{_u.id}}">Delte</a></td>
+					<td><a href="/admin/{{context}}/edit_user/{{_u.id}}">Modify</a></td>
 					{% if context != 'personal_area' %}
 					<td><input type="checkbox" name="check_{{_u.id}}"></td>
 					{%endif%}
