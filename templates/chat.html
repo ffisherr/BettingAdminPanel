@@ -1,13 +1,13 @@
 {% extends 'admin/master.html' %}
 {% block body %}
 <table>
-    <caption>Сообщения в чате {{chat.chat_name}}</caption>
+    <caption>Message in chat {{chat.chat_name}}</caption>
     <thead>
         <tr>
-            <th>Автор сообщения</th>
-            <th>Текст</th>
+            <th>Message author</th>
+            <th>Text</th>
             {% if admin == True %}
-            <th>Удалить сообщение</th>
+            <th>Delete message</th>
             {% endif %}
         </tr>
     </thead>
@@ -17,7 +17,7 @@
             <td>{{author}}</td>
             <td>{{message.text}}</td>
             {% if admin == True %}
-            <td><a href="/admin/chats/delete/message/{{message.id}}">Удалить сообщение</a></td>
+            <td><a href="/admin/chats/delete/message/{{message.id}}">Delete</a></td>
             {% endif %}
         </tr>
         {% endfor %}
