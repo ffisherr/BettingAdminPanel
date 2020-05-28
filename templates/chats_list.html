@@ -1,13 +1,13 @@
 {% extends 'admin/master.html' %}
 {% block body %}
 {% if agent == True %}
-<a href="/admin/chats/send_message" class="btn">Отправить сообщение</a>
+<a href="/admin/chats/send_message" class="btn">Send message</a>
 {%endif%}
 <table>
-    <caption>Список чатов</caption>
+    <caption>Chats list</caption>
     <thead>
         <tr>
-            <th>Название чата</th>
+            <th>Chat name</th>
         </tr>
     </thead>
     <tbody>
